@@ -48,11 +48,34 @@ function ajaxRequest(lat, long) {
             const temperature = Math.round(forecast.main.temp);
             const description = forecast.weather[0].description;
             const iconPath = `images/${forecast.weather[0].icon}.svg`;
-
-            console.log('日時：' + `${month}/${date} ${hours}:${min}`);
-            console.log('気温：' + temperature);
-            console.log('天気：' + description);
-            console.log('画像パス：' + iconPath);
+            
+            // 現在の天気とそれ以外で出力を変える
+            if(index === 0) {
+                const currentWeather = `
+                <div class="icon"><img src="${iconPath}"></div>
+                <div class="info">
+                    <p>
+                        <span class="description">現在の天気：${description}</span>
+                        <span class="temp">${temperature}</span>°C
+                    </p>
+                </div>`;
+                $('#weather').html(currentWeather);
+            } else {
+                const tableRow = `
+                <tr>
+                    <td class="info">
+                        ${month}/${date} ${hours}:${min}
+                    </td>
+                    <td class="icon"><img src="${iconPath}"></td>
+                    <td><span class="description">${description}</span></td>
+                    <td><span class="temp">${temperature}°C</span></td>
+                </tr>`;
+                $('#forecast').append(tableRow);
+            }
+            // console.log('日時：' + `${month}/${date} ${hours}:${min}`);
+            // console.log('気温：' + temperature);
+            // console.log('天気：' + description);
+            // console.log('画像パス：' + iconPath);
         });
     })
     .fail(function() {
